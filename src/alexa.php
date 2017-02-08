@@ -23,8 +23,13 @@ class Alexa
 	 */
 	protected static $ActionName = 'UrlInfo';
 
+    /**
+     *
+     *
+     *
+     *
+     */
     protected $httpClient;
-
 
 	/**
 	 * 服务地址
@@ -33,6 +38,11 @@ class Alexa
 	 */
 	protected $ServiceHost = 'awis.amazonaws.com';
 
+    /**
+     *
+     *
+     *
+     */
 	protected $HashAlgorithm = 'HmacSHA256';
 
 	/**
@@ -54,32 +64,35 @@ class Alexa
         $this->secretAccessKey = $secretAccessKey;
     }
 
+    /**
+     * 取得传入域名的Alexa信息
+     *
+     *
+     *
+     */
 	public function getUrlInfo($site, $responseGroup = "ContentData")
 	{
 		//传入参数,创建出参数数组
         $queryParams = $this->buildQueryParams($site, $responseGroup);
-
-
-        //加入签名
+        //生成签名
         $sig = $this->generateSignature($queryParams);
-
-
-
+        //组装请求字符串
         $url = 'http://' . $this->ServiceHost . '/?' . $queryParams . '&Signature=' . $sig;
-
-
+        //发送请求，得到输出XML字符串
         $ret = self::makeRequest($url);
 
-		var_dump($ret);
-
-
-        echo "\nResults for " . $site .":\n\n";
-
-
+        //var_dump($ret);
+        return $ret;
         //这里经常报错
-        self::parseResponse($ret);
+        //self::parseResponse($ret);//解释XML
 	}
 
+    /**
+     *
+     *
+     *
+     *
+     */
     protected function buildQuery($params)
     {
         return http_build_query($params);
@@ -115,50 +128,27 @@ class Alexa
     }
 
     /**
-     * Parses XML response from AWIS and displays selected data
-     * @param String $response    xml response from AWIS
-     */
-    public static function parseResponse($response) {
-        $xml = new SimpleXMLElement($response, null, false, 'http://awis.amazonaws.com/doc/2005-07-11');
-
-        if ($xml->count() && $xml->Response->UrlInfoResult->Alexa->count()) {
-            $info = $xml->Response->UrlInfoResult->Alexa;
-            $nice_array = array(
-                'Links In Count' => $info->ContentData->LinksInCount,
-                'Rank'           => $info->TrafficData->Rank,
-            );
-        }
-
-        foreach ($nice_array as $k => $v) {
-            echo $k . ': ' . $v ."\n";
-        }
-    }
-
-    /**
      * Generates an HMAC signature per RFC 2104.
+     * 生成签名
      *
-     * @param String $url       URL to use in createing signature
+     * @param String $url URL to use in createing signature
      */
     protected function generateSignature($url)
 	{
         $sign = "GET\n" . strtolower($this->ServiceHost) . "\n/\n" . $url;
-
-
-        echo "String to sign: \n" . $sign . "\n";
-
-
+        //echo "String to sign: \n" . $sign . "\n";
         $sig = base64_encode(hash_hmac('sha256', $sign, $this->secretAccessKey, true));
-
-
-        echo "\n 签名: " . $sig ."\n";
+        //echo "\n 签名: " . $sig ."\n";
 
         return rawurlencode($sig);//rawurlencode — 按照 RFC 3986 对 URL 进行编码
     }
 
     /**
-     * Makes request to AWIS
-     * @param String $url   URL to make request to
-     * @return String       Result of request
+     * 向AWIS提出请求
+     * [Makes request to AWIS]
+     *
+     * @param String $url URL to make request to
+     * @return String Result of request
      */
     protected static function makeRequest($url)
 	{
@@ -173,13 +163,40 @@ class Alexa
     }
 
     /**
-     * Builds current ISO8601 timestamp.
-	 * [构建当前ISO8601时间戳]
+     * 构建当前ISO8601时间戳
+     * [Builds current ISO8601 timestamp.]
+	 *
 	 * @return string
      */
     protected static function getTimestamp()
     {
         return gmdate("Y-m-d\TH:i:s.\\0\\0\\0\\Z", time());
+    }
+
+    /**
+     * 从AWIS解析XML响应并显示所选数据
+     * [Parses XML response from AWIS and displays selected data]
+     *
+     * @param String $response xml response from AWIS
+     */
+    public static function parseResponse($response)
+    {
+        $xml = new SimpleXMLElement($response, null, false, 'http://awis.amazonaws.com/doc/2005-07-11');
+        if ($xml->count() && $xml->Response->UrlInfoResult->Alexa->count()) {
+            $info = $xml->Response->UrlInfoResult->Alexa;
+            $nice_array = array(
+                'LinksInCount' => $info->ContentData->LinksInCount,
+                'Rank'           => $info->TrafficData->Rank,
+                'AdultContent'   => $info->ContentData->AdultContent,
+                'Language'       => $info->ContentData->Language->Locale,
+                'MedianLoadTime' => $info->ContentData->Speed->MedianLoadTime,//中间载入时间
+                'Percentile'     => $info->ContentData->Speed->Percentile,//百分位数
+            );
+        }
+
+        foreach ($nice_array as $k => $v) {
+            echo $k . ': ' . $v ."\n";
+        }
     }
 }
 

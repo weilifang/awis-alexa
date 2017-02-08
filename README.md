@@ -1,4 +1,13 @@
+# Awis-Alexa
 
+Alexa 包
+
+
+
+
+
+
+### 附带说明
 -------------------------------------------------------------------------
 -              PHP Sample for Alexa Web Information Service             -
 -------------------------------------------------------------------------
@@ -29,12 +38,12 @@ up for Amazon Web Services.)
 
 3. Your credit card was not valid.
 
-If you are getting "Request Expired" messages, please check that the date 
+If you are getting "Request Expired" messages, please check that the date
 and time are properly set on your computer.
 
 翻译：
 -------------------------------------------------- -----------------------
-- Alexa Web信息服务的PHP示例 - 
+- Alexa Web信息服务的PHP示例 -
 -------------------------------------------------- -----------------------
 此示例将向Alexa Web信息服务提出请求
 使用您的访问密钥ID和秘密访问密钥。
