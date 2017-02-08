@@ -1,0 +1,12 @@
+{
+    "name": "weilifang/awis-alexa",
+    "description": "this is a Awis Alexa plugins",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "weilifang",
+            "email": "1257583900@qq.com"
+        }
+    ],
+    "require": {}
+}
