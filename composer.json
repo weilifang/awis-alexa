@@ -8,5 +8,8 @@
             "email": "1257583900@qq.com"
         }
     ],
+    "autoload": {
+        "psr-4": { "Weilifang\\AwisAlexa\\": "src" }
+    },
     "require": {}
 }

@@ -1,7 +1,7 @@
 <?php
-require_once 'src/alexa.php';
+require_once 'vendor/autoload.php';
 
-$awis = new Alexa('AKIAJBV37W6XMKGUTKPA', '+W3OmPXZ6WNydEK2TbRVYRE7pqc57/Lhex72iCmP');
+$awis = new Weilifang\AwisAlexa\Alexa('AKIAJBV37W6XMKGUTKPA', '+W3OmPXZ6WNydEK2TbRVYRE7pqc57/Lhex72iCmP');
 
 $result = $awis->getUrlInfo('http://www.baidu.com', 'Rank,LinksInCount,RankByCountry,UsageStats,AdultContent,Language,Speed,OwnedDomains');//Rank,LinksInCount
 

@@ -1,4 +1,5 @@
 <?php
+namespace Weilifang\AwisAlexa;
 
 class Alexa
 {
@@ -181,7 +182,7 @@ class Alexa
      */
     public static function parseResponse($response)
     {
-        $xml = new SimpleXMLElement($response, null, false, 'http://awis.amazonaws.com/doc/2005-07-11');
+        $xml = new \SimpleXMLElement($response, null, false, 'http://awis.amazonaws.com/doc/2005-07-11');
         if ($xml->count() && $xml->Response->UrlInfoResult->Alexa->count()) {
             $info = $xml->Response->UrlInfoResult->Alexa;
             $nice_array = array(
