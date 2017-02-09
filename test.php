@@ -3,13 +3,16 @@ require_once 'vendor/autoload.php';
 
 $awis = new Weilifang\AwisAlexa\Alexa('AKIAJBV37W6XMKGUTKPA', '+W3OmPXZ6WNydEK2TbRVYRE7pqc57/Lhex72iCmP');
 
-$result = $awis->getUrlInfo('http://www.baidu.com', 'Rank,LinksInCount,RankByCountry,UsageStats,AdultContent,Language,Speed,OwnedDomains');//Rank,LinksInCount
+$result = $awis->getUrlInfo('http://www.google.com', 'Rank,LinksInCount,RankByCountry,UsageStats,AdultContent,Language,Speed,OwnedDomains');
 
+//解释XML
 $data = $awis->parseResponse($result);
 
-//
-//可以使用的字段有如下：
 /**
+ * 可以使用的字段有如下：
+ *
+ * 共有11个可选参数。
+ *
  * RelatedLinks:相关链接。 Up to 11 related links 最多11个相关链接
  * Categories:类别。
  * Rank:排名。 Alexa三个月平均流量排名
