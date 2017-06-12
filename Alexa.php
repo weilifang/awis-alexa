@@ -195,9 +195,11 @@ class Alexa
             );
         }
 
-        foreach ($nice_array as $k => $v) {
+/*        foreach ($nice_array as $k => $v) {
             echo $k . ': ' . $v ."\n";
-        }
+        }*/
+
+        return $nice_array;
     }
 }
 
